@@ -10,7 +10,7 @@
 
 #
 
-echo "\n Hello user, Please hit enter and give specific inputs to download video from youtube \n"
+echo "\n Hello user, Please give specific inputs to download video from youtube \n"
 
 read -p "`echo '\n> '`video/playlist url: " url
 
@@ -31,8 +31,14 @@ download_video(){
     echo "Installing 'youtube.dl' a software required to download videos..."
     sudo apt-get install youtube-dl;
   fi
-  
-  youtube-dl --playlist-start "$2" -f 'bestvideo[height<='"$3"']+bestaudio/best[height<='"$3"']' "$1"
+
+  if [ $(dpkg-query -W -f='${Status}' speech-dispatcher 2>/dev/null | grep -c "ok installed") -eq 0 ];
+  then
+    echo "Installing 'speech-dispatcher to give a voice output after download complete"
+    sudo apt-get install speech-dispatcher;
+  fi
+
+  youtube-dl --playlist-start "$2" -f 'bestvideo[height<='"$3"']+bestaudio/best[height<='"$3"']' "$1" && echo "\n\nDownload Completed!" && spd-say "Download completed"
 }
 
 
