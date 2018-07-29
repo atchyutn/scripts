@@ -36,7 +36,7 @@
 
     // Create an array of MySQL queries to run
     $tables = array();
-    $list_tables_sql = "SHOW TABLES FROM test;";
+    $list_tables_sql = "SHOW TABLES FROM $webdbname;";
     $result = mysqli_query($webcon, $list_tables_sql);
     if($result)
         while($table = mysqli_fetch_row($result))
@@ -46,8 +46,8 @@
 
     foreach($tables as $table) {
         echo $table, '<br>';
-        $webtab = "test.$table";
-        $mobtab = "test_bak.$table";
+        $webtab = "$webdbname.$table";
+        $mobtab = "$mobdbname.$table";
         $sql = array(
             "DROP TABLE IF EXISTS $mobtab;",
             "CREATE TABLE $mobtab SELECT * FROM $webtab"
