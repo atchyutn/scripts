@@ -1,0 +1,7 @@
+
+while true;
+do
+echo "enter branch name"
+read branchName
+git merge $branchName
+done
